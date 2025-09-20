@@ -1,0 +1,22 @@
+name: TelegramChatBridge
+version: '1.0.0'
+main: com.stonix.telegramchatbridge.TelegramChatBridge
+api-version: '1.21'
+author: Stonix
+description: A plugin that bridges Minecraft chat with Telegram groups
+website: https://github.com/stonix/telegram-chat-bridge
+
+commands:
+  tcb:
+    description: Main command for Telegram Chat Bridge
+    usage: /tcb <reload|status|help>
+    permission: tcb.admin
+
+permissions:
+  tcb.admin:
+    description: Allows access to admin commands
+    default: op
+  tcb.chat:
+    description: Allows sending messages to Telegram
+    default: true
+

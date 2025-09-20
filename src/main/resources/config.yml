@@ -1,0 +1,44 @@
+# Telegram Chat Bridge Configuration
+# ===================================
+
+# Telegram Bot Configuration
+telegram:
+  # Your Telegram Bot Token (get it from @BotFather)
+  bot-token: "8373530125:AAEYBMuf2nPgvMQ5sVb0WiXpFptEiOlVQFw"
+  
+  # The bot will automatically work with any group you add it to
+  # No need to configure chat IDs - just add the bot to any group!
+  
+  # Format for messages sent from Minecraft to Telegram
+  # Available placeholders: {player}, {message}, {server}
+  telegram-format: "[MC] {player}: {message}"
+  
+  # Format for messages sent from Telegram to Minecraft
+  # Available placeholders: {username}, {message}
+  minecraft-format: "&6[TG] &f{username}: &7{message}"
+
+# Chat Configuration
+chat:
+  # Enable/disable message forwarding
+  enabled: true
+  
+  # Maximum message length (0 = unlimited)
+  max-message-length: 256
+  
+  # Prefix for admin commands
+  command-prefix: "&8[&6TCB&8]&r"
+  
+  # Enable debug mode (shows more detailed logs)
+  debug: true
+
+# Server Configuration
+server:
+  # Server name displayed in Telegram messages
+  name: "Minecraft Server"
+  
+  # Enable server start/stop notifications
+  notifications:
+    enabled: true
+    start-message: "🟢 Server started!"
+    stop-message: "🔴 Server stopped!"
+
