@@ -59,7 +59,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            // Check if the update contains a message
             if (update.hasMessage() && update.getMessage().hasText()) {
                 var message = update.getMessage();
                 long chatId = message.getChatId();
@@ -69,7 +68,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     plugin.getLogger().info("Chat type: " + message.getChat().getType());
                 }
                 
-                // Add this chat to active chats if it's a group/supergroup
                 if (message.getChat().isGroupChat() || message.getChat().isSuperGroupChat()) {
                     if (!activeChatIds.contains(chatId)) {
                         activeChatIds.add(chatId);
@@ -77,7 +75,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 
-                // Only process messages from groups (not private chats)
                 if (!message.getChat().isGroupChat() && !message.getChat().isSuperGroupChat()) {
                     if (configManager.isDebugMode()) {
                         plugin.getLogger().info("Ignoring private message from chat ID: " + chatId);
@@ -85,7 +82,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     return;
                 }
                 
-                // Don't process bot messages
                 if (message.getFrom().getIsBot()) {
                     if (configManager.isDebugMode()) {
                         plugin.getLogger().info("Ignoring bot message from: " + message.getFrom().getUserName());
@@ -103,7 +99,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
                 
-                // Don't process command messages
                 if (text.startsWith("/")) {
                     if (configManager.isDebugMode()) {
                         plugin.getLogger().info("Ignoring command message: " + text);
@@ -111,10 +106,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     return;
                 }
                 
-                // Format and send to Minecraft
                 String formattedMessage = messageFormatter.formatTelegramToMinecraft(username, text);
-                
-                // Send to Minecraft chat asynchronously
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     Bukkit.broadcastMessage(formattedMessage);
                     
@@ -133,7 +125,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             return;
         }
         
-        // Send message to all active group chats
         for (Long chatId : activeChatIds) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(chatId.toString());
@@ -163,7 +154,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         try {
-            // Get bot info from Telegram API
             var me = this.getMe();
             if (me != null) {
                 return me.getUserName();

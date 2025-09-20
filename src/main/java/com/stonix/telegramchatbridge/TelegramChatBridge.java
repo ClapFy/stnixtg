@@ -22,27 +22,17 @@ public class TelegramChatBridge extends JavaPlugin {
     public void onEnable() {
         instance = this;
         
-        // Initialize configuration
         saveDefaultConfig();
         configManager = new ConfigManager(this);
-        
-        // Initialize message formatter
         messageFormatter = new MessageFormatter(this);
-        
-        // Initialize Telegram bot
         if (!initializeTelegramBot()) {
             getLogger().severe("Failed to initialize Telegram bot. Plugin will be disabled.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         
-        // Register listeners
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
-        
-        // Register commands
         getCommand("tcb").setExecutor(new TCBCommand(this));
-        
-        // Send start notification
         if (configManager.getBoolean("server.notifications.enabled", true)) {
             String startMessage = configManager.getString("server.notifications.start-message", "🟢 Server started!");
             telegramBot.sendMessage(startMessage);
@@ -55,15 +45,12 @@ public class TelegramChatBridge extends JavaPlugin {
     @Override
     public void onDisable() {
         if (isEnabled) {
-            // Send stop notification
             if (configManager != null && configManager.getBoolean("server.notifications.enabled", true)) {
                 String stopMessage = configManager.getString("server.notifications.stop-message", "🔴 Server stopped!");
                 if (telegramBot != null) {
                     telegramBot.sendMessage(stopMessage);
                 }
             }
-            
-            // Disconnect Telegram bot
             if (telegramBot != null) {
                 telegramBot.stop();
             }
@@ -98,7 +85,6 @@ public class TelegramChatBridge extends JavaPlugin {
         reloadConfig();
         configManager.reload();
         
-        // Restart Telegram bot with new configuration
         if (telegramBot != null) {
             telegramBot.stop();
         }
